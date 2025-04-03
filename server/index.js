@@ -1,34 +1,24 @@
 const http = require("http");
 const { Server } = require("socket.io");
 
-// Update to localhost and new port
 const IP_ADDRESS = "127.0.0.1";
 const PORT = 8002;
 
-// Create an HTTP server
 const server = http.createServer();
-
-// Attach Socket.IO to the HTTP server
 const io = new Server(server, {
   cors: {
-    origin: "*", // Allow all origins (Update if needed)
+    origin: "*",
     methods: ["GET", "POST"]
   }
 });
 
-const emailToSocketIdMap = new Map();
-const socketidToEmailMap = new Map();
-
 io.on("connection", (socket) => {
   console.log(`Socket Connected: ${socket.id}`);
-  
-  socket.on("room:join", (data) => {
-    const { email, room } = data;
-    emailToSocketIdMap.set(email, socket.id);
-    socketidToEmailMap.set(socket.id, email);
-    io.to(room).emit("user:joined", { email, id: socket.id });
+
+  socket.on("room:join", ({ room }) => {
     socket.join(room);
-    io.to(socket.id).emit("room:join", data);
+    io.to(room).emit("user:joined", { id: socket.id });
+    io.to(socket.id).emit("room:join", { room });
   });
 
   socket.on("user:call", ({ to, offer }) => {
@@ -50,7 +40,6 @@ io.on("connection", (socket) => {
   });
 });
 
-// Start the server
 server.listen(PORT, IP_ADDRESS, () => {
   console.log(`Socket.IO server running at http://${IP_ADDRESS}:${PORT}`);
 });
