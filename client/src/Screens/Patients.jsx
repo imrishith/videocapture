@@ -21,7 +21,7 @@ export const Patients = () => {
       }
 
       try {
-        const response = await axios.get(`http://10.1.5.211:8000/api/v1/patients/patients/${patientId}/appointments`);
+        const response = await axios.get(`http://10.1.0.124:8000/api/v1/patients/patients/${patientId}/appointments`);
         setAppointments(response.data.appointments);
       } catch (err) {
         setError("Failed to fetch patient appointments");

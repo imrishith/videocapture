@@ -37,10 +37,10 @@ const Login = () => {
     }
     // Define API endpoints for Doctor, Patient, and Admin login
     const apiUrl = userType === "doctor"
-      ? "http://10.1.5.211:8000/api/v1/doctors/doctors/login"
+      ? "http://10.1.0.124:8000/api/v1/doctors/doctors/login"
       : userType === "patient"
-      ? "http://10.1.5.211:8000/api/v1/patients/login"
-      : "http://10.1.5.211:8000/api/v1/auth/login";
+      ? "http://10.1.0.124:8000/api/v1/patients/login"
+      : "http://10.1.0.124:8000/api/v1/auth/login";
 
     
       try {

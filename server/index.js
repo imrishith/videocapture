@@ -1,7 +1,7 @@
 const http = require("http");
 const { Server } = require("socket.io");
 
-const IP_ADDRESS = "10.1.5.211"; // Replace with your actual server IP
+const IP_ADDRESS = "10.1.0.124"; // Replace with your actual server IP
 const PORT = 8001;
 
 // Create an HTTP server
