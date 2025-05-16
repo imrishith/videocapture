@@ -123,9 +123,35 @@ const RoomPage = () => {
   };
 
   const onStopRecording = (recordedBlob) => {
+    console.log("🎧 Blob size:", recordedBlob.blob.size);
+  console.log("🎧 Blob type:", recordedBlob.blob.type);
     setAudioBlob(recordedBlob.blobURL);
+    uploadAudioBlob(recordedBlob.blob);
   };
 
+  const uploadAudioBlob = async (blob) => {
+  const formData = new FormData();
+  const file = new File([blob], "recorded_audio.webm", { type: "audio/webm" });
+  formData.append("audio_file", file);
+
+  try {
+    const response = await fetch("http://3.110.56.25/process-audio/", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Server responded with ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log("✅ Transcription result:", result);
+    // alert("Transcription: " + result.transcription);
+  } catch (error) {
+    // console.error("❌ Upload failed:", error);
+    alert("Failed to process audio.");
+  }
+};
   useEffect(() => {
     peer.peer.addEventListener("track", async (ev) => {
       const remoteStream = ev.streams;
